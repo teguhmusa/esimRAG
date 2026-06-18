@@ -16,7 +16,7 @@ from src.indexing import (
     EntityExtractor, print_entity_stats_obj,
     RelationshipExtractor, print_relationship_stats,
     KnowledgeObjectBuilder, print_ko_stats,
-    HybridIndex,
+    HybridIndex, VectorIndex,
 )
 
 
@@ -83,7 +83,7 @@ def run_pipeline(pdf_path, output_dir="output", page_start=1, page_end=None):
         print_ko_stats(knowledge_objects)
 
         print("\nStep 8: Hybrid Index...")
-        index = HybridIndex()
+        index = VectorIndex()
         index.build(ko_data, rels_data)
         index.stats()
         index_dir = out / "index"

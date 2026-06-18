@@ -25,6 +25,8 @@ from .builder.knowledge_object_builder import (
 
 from .hybrid_index import HybridIndex
 
+from .vector_index import VectorIndex
+
 __all__ = [
     "PDFParser",
     "SectionExtractor",
@@ -34,6 +36,7 @@ __all__ = [
     "RelationshipExtractor",
     "KnowledgeObjectBuilder",
     "HybridIndex",
+    "VectorIndex",
     "print_entity_stats_obj",
     "print_relationship_stats",
     "print_ko_stats",

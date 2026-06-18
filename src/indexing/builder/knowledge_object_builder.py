@@ -92,8 +92,12 @@ class KnowledgeObjectBuilder:
             objects.append(self._build_error_code_ko(ec))
 
         print("  → Building EFFile KnowledgeObjects...")
+        seen_ef_ids = set()
         for ef in entities["ef_files"]:
-            objects.append(self._build_ef_ko(ef))
+            ko = self._build_ef_ko(ef)
+            if ko.ko_id not in seen_ef_ids:
+                seen_ef_ids.add(ko.ko_id)
+                objects.append(ko)
 
         return objects
 
@@ -353,7 +357,7 @@ Section: {section_id} — {section.get('title', '')}
         rels = self._rel_index.get(ef_id, []) + self._rev_index.get(ef_id, [])
 
         return KnowledgeObject(
-            ko_id=f"KO-EF-{ef_id}",
+            ko_id=f"KO-EF-{ef_id}-{ef['fid']}-{(ef.get('parent_template') or 'x').replace('-','_')}",
             ko_type="EFFile",
             primary_label=ef["name"],
             text_content=text,

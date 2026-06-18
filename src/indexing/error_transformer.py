@@ -372,9 +372,6 @@ class LLMErrorTransformer:
             method = "POST",
         )
 
-        print("errorr API")
-        print(self._api_key)
-
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 data = json.loads(resp.read())

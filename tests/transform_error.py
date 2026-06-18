@@ -22,7 +22,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from config.settings import settings
-from src.indexing import HybridIndex
+#from src.indexing import HybridIndex
+from src.indexing import VectorIndex
 from src.indexing.error_transformer import (
     ValidatorError, ContextRetriever,
     LLMErrorTransformer, ErrorTransformPipeline,
@@ -72,12 +73,12 @@ SAMPLE_ERRORS = [
 ]
 
 
-def load_index(index_dir: str = "output/index") -> HybridIndex:
+def load_index(index_dir: str = "output/index") -> VectorIndex:
     print(f"🔎 Loading index from {index_dir}...")
-    return HybridIndex.load(index_dir)
+    return VectorIndex.load(index_dir)
 
 
-def test_mode(error_dict: dict, index: HybridIndex, sections_data, requirements_data):
+def test_mode(error_dict: dict, index: VectorIndex, sections_data, requirements_data):
     """Show retrieved context without calling LLM."""
     print("\n" + "=" * 65)
     print("TEST MODE — Context Retrieval (no LLM call)")
@@ -100,7 +101,7 @@ def test_mode(error_dict: dict, index: HybridIndex, sections_data, requirements_
     print(f"Spec expected : {ctx.found_expected_value}")
     print()
     print("--- Context Text ---")
-    print(ctx.to_context_text()[:1200])
+    print(ctx.to_context_text())
 
 
 def transform_and_print(error_dict: dict, pipeline: ErrorTransformPipeline):
@@ -119,17 +120,18 @@ def main():
     parser.add_argument("--csv",     default=None, help="CSV file with multiple errors")
     parser.add_argument("--sample",  action="store_true", help="Use built-in sample errors")
     parser.add_argument("--test",    action="store_true", help="Test mode: show context only")
-    parser.add_argument("--api-key", default="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", help="Anthropic API key (or set ANTHROPIC_API_KEY env var)")
+    parser.add_argument("--api-key", default=settings.anthropic_api_key, help="Anthropic API key (or set ANTHROPIC_API_KEY env var)")
     parser.add_argument("--output",  default=None, help="Output JSON file path")
+    parser.add_argument("--outputData",  default="output", help="Output Index")
     args = parser.parse_args()
 
     # Load index
     index = load_index(args.index)
 
     # Load supporting data
-    with open("output/sections.json", encoding="utf-8") as f:
+    with open(args.outputData + "/sections.json", encoding="utf-8") as f:
         sections_data = json.load(f)
-    with open("output/requirements.json", encoding="utf-8") as f:
+    with open(args.outputData + "/requirements.json", encoding="utf-8") as f:
         requirements_data = json.load(f)
 
     # Determine errors to process

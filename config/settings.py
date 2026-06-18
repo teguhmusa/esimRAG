@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     log_file: str = Field(default="./logs/esim_rag.log", env="LOG_FILE")
 
     class Config:
-        env_file = ".env"
+        env_file = ".env.txt"
         env_file_encoding = "utf-8"
         extra = "ignore"
 
@@ -56,4 +56,3 @@ settings = Settings()
 settings.data_dir.mkdir(parents=True, exist_ok=True)
 settings.logs_dir.mkdir(parents=True, exist_ok=True)
 (settings.data_dir / "raw").mkdir(exist_ok=True)
-(settings.data_dir / "chunks").mkdir(exist_ok=True)

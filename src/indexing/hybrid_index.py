@@ -19,15 +19,22 @@ Query API:
   index.lookup_path(error_path)         → direct path lookup
 """
 
+import os
+
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
+
 import json
-import math
 import re
-import pickle
+import math
 from pathlib import Path
+
+import numpy as np
+import chromadb
+import pickle
+
 from dataclasses import dataclass, field
 from typing import Optional
 
-import numpy as np
 from rank_bm25 import BM25Okapi
 
 
