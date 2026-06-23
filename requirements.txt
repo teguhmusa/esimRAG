@@ -5,8 +5,9 @@ langchain-openai==0.1.23
 
 # Embedding & Vector DB
 sentence-transformers==3.0.1
-chromadb==0.5.5
+chromadb
 rank-bm25
+posthog
 
 # LLM Provider
 # to be done

@@ -49,10 +49,8 @@ class Settings(BaseSettings):
         extra = "ignore"
 
 
-# Singleton — import this class in all module.
 settings = Settings()
 
-# Auto-create direktori yang dibutuhkan
 settings.data_dir.mkdir(parents=True, exist_ok=True)
 settings.logs_dir.mkdir(parents=True, exist_ok=True)
 (settings.data_dir / "raw").mkdir(exist_ok=True)
